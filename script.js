@@ -215,6 +215,7 @@ function createString(arr) {
 
 document.querySelector('.start-form').addEventListener('submit', e => {
   e.preventDefault();
+  document.querySelector('.container-3').innerHTML = '';
   const input = document.querySelector('.start-input');
   document.querySelector('.element-name').textContent =
     elementNames[input.value - 1];
@@ -249,7 +250,45 @@ document.querySelector('.start-form').addEventListener('submit', e => {
   });
   input.blur();
 });
-
+document.querySelector('.blocks-orbitals').addEventListener('click', e => {
+  const block = e.target.closest('.block');
+  const arr = block.querySelector('p:last-child').textContent.split('');
+  const obj = {
+    n: arr[0],
+    l:
+      arr[1] === 's'
+        ? 0
+        : arr[1] === 'p'
+        ? 1
+        : arr[1] === 'd'
+        ? 2
+        : arr[1] === 'f'
+        ? 3
+        : '',
+    s: block.querySelector('.upside-down').textContent ? '-1/2' : '1/2',
+  };
+  const mArr = [];
+  let mI = -obj.l;
+  times(obj.l * 2 + 1, e => {
+    mI = mI === 0 ? 0 : mI;
+    mArr.push(mI);
+    mI++;
+  });
+  obj.m = mArr[arr[2] - 1 || 0];
+  document.querySelector('.container-3').innerHTML = `
+  <hr>
+  <div class="blocks text-altern-color">
+    <div class="block"><p>N</p><hr><p class="quantum-n">${obj.n}</p></div>
+    <div class="block"><p>L</p><hr><p class="quantum-l">${obj.l}</p></div>
+    <div class="block"><p>M</p><hr><p class="quantum-m">${obj.m}</p></div>
+    <div class="block"><p>S</p><hr><p class="quantum-s">${obj.s}</p></div>
+  </div>
+  `;
+  /*   Object.entries(obj).forEach(e => {
+    console.log(e);
+    document.querySelector(`.quantum-${e[0]}`).textContent = e[1];
+  }); */
+});
 /* let consol = all(11);
 consol = createString(consol);
 console.log(consol); */
